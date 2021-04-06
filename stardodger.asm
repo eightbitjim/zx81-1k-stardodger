@@ -10,7 +10,7 @@ KEYBOARD: equ $02bb
 
 SCREEN_WIDTH: equ 32
 PLAY_AREA_HEIGHT: equ 18
-DELAY: equ 1
+DELAY: equ 512
 
   ; go to the relevant place in the file
   seek $79
@@ -50,7 +50,7 @@ clearLoop:
 scroll:
   ; pause a bit
   ld bc, DELAY ; number of frames to pause
-  call PAUSE
+  call pause
 
   ; choose next star position
   ld hl, (randvar)
@@ -158,6 +158,15 @@ repeat:
 
 die:
   ld bc, (score)
+  ret
+
+pause:
+  dec bc
+  ld a, 0
+  cp b
+  jr nz, pause
+  cp c
+  jr nz, pause
   ret
 
 randvar:
